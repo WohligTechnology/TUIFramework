@@ -58,21 +58,32 @@ if (program.generate) {
             }
         })
 
-        var service = fs.readFileSync(__dirname + "/lib/Service.js")
-        fs.exists("./api/services", function(isExist) {
+        var mongooseModel = fs.readFileSync(__dirname + "/lib/MongooseModel.js")
+        fs.exists("./mongooseModel", function(isExist) {
             if (isExist) {
-                service = _.replace(
-                    service,
-                    new RegExp("NewService", "g"),
+                mongooseModel = _.replace(
+                    mongooseModel,
+                    new RegExp("NewMongooseModel", "g"),
                     apiName
                 )
                 var write = fs.writeFileSync(
-                    "api/services/" + apiName + ".js",
-                    service
+                    "mongooseModel/" + apiName + ".js",
+                    mongooseModel
                 )
-                console.log("Service " + apiName + " Generated")
+                console.log("Mongoose Model " + apiName + " Generated")
             } else {
-                console.log("Service Folder not found")
+                console.log("Mongoose Model Folder not found")
+            }
+        })
+
+        var model = fs.readFileSync(__dirname + "/lib/Model.js")
+        fs.exists("./models", function(isExist) {
+            if (isExist) {
+                model = _.replace(model, new RegExp("NewModel", "g"), apiName)
+                var write = fs.writeFileSync("models/" + apiName + ".js", model)
+                console.log("Model " + apiName + " Generated")
+            } else {
+                console.log("Model Folder not found")
             }
         })
     }
