@@ -1,15 +1,15 @@
 {
-  "name": "wohlig",
+  "name": "TUI",
   "version": "0.1.0",
-  "description": "Wohlig Technology Frameworks",
+  "description": "TUI Framework",
   "main": "index.js",
   "scripts": {
-    "test": "wohlig"
+    "test": "tui"
   },
   "bin": {
-    "wohlig": "./wohlig.js"
+    "tui": "./tui.js"
   },
-  "author": "chintan@wohlig.com",
+  "author": "jagruti.shah@tui.com",
   "license": "ISC",
   "dependencies": {
     "async": "^2.5.0",
