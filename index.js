@@ -80,7 +80,10 @@ if (program.generate) {
         fs.exists("./models", function(isExist) {
             if (isExist) {
                 model = _.replace(model, new RegExp("NewModel", "g"), apiName)
-                var write = fs.writeFileSync("models/" + apiName + ".js", model)
+                var write = fs.writeFileSync(
+                    "models/" + apiName + "Model.js",
+                    model
+                )
                 console.log("Model " + apiName + " Generated")
             } else {
                 console.log("Model Folder not found")
