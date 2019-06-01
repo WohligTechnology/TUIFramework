@@ -34,7 +34,6 @@ if (program.generate) {
     } else {
         console.log("Copying the Content")
         var apiName = _.upperFirst(program.generate)
-
         var controller = fs.readFileSync(__dirname + "/lib/Controller.js")
         fs.exists("controllers", function(isExist) {
             if (isExist) {
@@ -87,6 +86,47 @@ if (program.generate) {
                 console.log("Model " + apiName + " Generated")
             } else {
                 console.log("Model Folder not found")
+            }
+        })
+
+        //unit testing
+        var api = fs.readFileSync(__dirname + "/lib/api.js")
+        var test = fs.readFileSync(__dirname + "/lib/test.js")
+        var fileName = apiName + "/" + apiName + "Api.js"
+        fs.exists("./test", function(isExist) {
+            if (isExist) {
+                api = _.replace(api, new RegExp("New", "g"), apiName)
+                fs.exists("./test/" + apiName, function(isExist) {
+                    if (isExist) {
+                        console.log(
+                            "Test cases for " + apiName + "api already created"
+                        )
+                    } else {
+                        fs.mkdirSync("./test/" + apiName)
+                        // var fileName = apiName + "/" + apiName + "Api.js"
+                        var write = fs.writeFileSync("test/" + fileName, api)
+                        var appenddata =
+                            'require("./' +
+                            apiName +
+                            "/" +
+                            apiName +
+                            "Api.js" +
+                            '")'
+                        fs.appendFileSync("test/test.js", appenddata)
+                        console.log("test case create")
+                    }
+                })
+            } else {
+                fs.mkdirSync("./test")
+                fs.mkdirSync("./test/" + apiName)
+                // var fileName = apiName + "/" + apiName + "Api.js"
+                var write = fs.writeFileSync("test/" + fileName, api)
+                var write = fs.writeFileSync("test/test.js", test)
+                var appenddata =
+                    'require("./' + apiName + "/" + apiName + "Api.js" + '")'
+                fs.appendFileSync("test/test.js", appenddata)
+                console.log("test folder created")
+                //make test folder etc
             }
         })
     }
