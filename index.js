@@ -37,29 +37,32 @@ if (program.generate) {
         var controller = fs.readFileSync(__dirname + "/lib/Controller.js")
         fs.exists("controllers", function(isExist) {
             if (isExist) {
-                fs.exists("controllers/" + apiName + "Controller.js", function(
-                    isExist
-                ) {
-                    if (isExist) {
-                        "Controller for " + apiName + "already exist"
-                    } else {
-                        controller = _.replace(
-                            controller,
-                            new RegExp("NewController", "g"),
-                            apiName
-                        )
-                        controller = _.replace(
-                            controller,
-                            new RegExp("NewModel", "g"),
-                            apiName + "Model"
-                        )
-                        var write = fs.writeFileSync(
-                            "controllers/" + apiName + "Controller.js",
-                            controller
-                        )
+                fs.exists(
+                    "./controllers/" + apiName + "Controller.js",
+                    function(isExist) {
+                        if (isExist) {
+                            console.log(
+                                "Controller " + apiName + " already exist"
+                            )
+                        } else {
+                            controller = _.replace(
+                                controller,
+                                new RegExp("NewController", "g"),
+                                apiName
+                            )
+                            controller = _.replace(
+                                controller,
+                                new RegExp("NewModel", "g"),
+                                apiName + "Model"
+                            )
+                            var write = fs.writeFileSync(
+                                "controllers/" + apiName + "Controller.js",
+                                controller
+                            )
+                            console.log("Controller " + apiName + " Generated")
+                        }
                     }
-                })
-                console.log("Controller " + apiName + " Generated")
+                )
             } else {
                 console.log("Controller Folder not found")
             }
@@ -68,16 +71,26 @@ if (program.generate) {
         var mongooseModel = fs.readFileSync(__dirname + "/lib/MongooseModel.js")
         fs.exists("./mongooseModel", function(isExist) {
             if (isExist) {
-                mongooseModel = _.replace(
-                    mongooseModel,
-                    new RegExp("NewMongooseModel", "g"),
-                    apiName
-                )
-                var write = fs.writeFileSync(
-                    "mongooseModel/" + apiName + ".js",
-                    mongooseModel
-                )
-                console.log("Mongoose Model " + apiName + " Generated")
+                fs.exists("./mongooseModel/" + apiName + ".js", function(
+                    isExist
+                ) {
+                    if (isExist) {
+                        console.log(
+                            "Mongoose Model " + apiName + " already exists"
+                        )
+                    } else {
+                        mongooseModel = _.replace(
+                            mongooseModel,
+                            new RegExp("NewMongooseModel", "g"),
+                            apiName
+                        )
+                        var write = fs.writeFileSync(
+                            "mongooseModel/" + apiName + ".js",
+                            mongooseModel
+                        )
+                        console.log("Mongoose Model " + apiName + " Generated")
+                    }
+                })
             } else {
                 console.log("Mongoose Model Folder not found")
             }
@@ -86,12 +99,24 @@ if (program.generate) {
         var model = fs.readFileSync(__dirname + "/lib/Model.js")
         fs.exists("./models", function(isExist) {
             if (isExist) {
-                model = _.replace(model, new RegExp("NewModel", "g"), apiName)
-                var write = fs.writeFileSync(
-                    "models/" + apiName + "Model.js",
-                    model
-                )
-                console.log("Model " + apiName + " Generated")
+                fs.exists("./models/" + apiName + "Model.js", function(
+                    isExist
+                ) {
+                    if (isExist) {
+                        console.log("Model " + apiName + " already exists")
+                    } else {
+                        model = _.replace(
+                            model,
+                            new RegExp("NewModel", "g"),
+                            apiName
+                        )
+                        var write = fs.writeFileSync(
+                            "models/" + apiName + "Model.js",
+                            model
+                        )
+                        console.log("Model " + apiName + " Generated")
+                    }
+                })
             } else {
                 console.log("Model Folder not found")
             }
@@ -103,15 +128,14 @@ if (program.generate) {
         var fileName = apiName + "/" + apiName + "Api.js"
         fs.exists("./test", function(isExist) {
             if (isExist) {
-                api = _.replace(api, new RegExp("New", "g"), apiName)
                 fs.exists("./test/" + apiName, function(isExist) {
                     if (isExist) {
                         console.log(
-                            "Test cases for " + apiName + "api already created"
+                            "Test cases for " + apiName + " api already exists"
                         )
                     } else {
                         fs.mkdirSync("./test/" + apiName)
-                        // var fileName = apiName + "/" + apiName + "Api.js"
+                        api = _.replace(api, new RegExp("New", "g"), apiName)
                         var write = fs.writeFileSync("test/" + fileName, api)
                         var appenddata =
                             '\nrequire("./' +
@@ -121,20 +145,19 @@ if (program.generate) {
                             "Api.js" +
                             '")'
                         fs.appendFileSync("test/test.js", appenddata)
-                        console.log("test case create")
+                        console.log("Test cases for " + apiName + " generated")
                     }
                 })
             } else {
                 fs.mkdirSync("./test")
                 fs.mkdirSync("./test/" + apiName)
-                // var fileName = apiName + "/" + apiName + "Api.js"
+                api = _.replace(api, new RegExp("New", "g"), apiName)
                 var write = fs.writeFileSync("test/" + fileName, api)
                 var write = fs.writeFileSync("test/test.js", test)
                 var appenddata =
                     'require("./' + apiName + "/" + apiName + "Api.js" + '")'
                 fs.appendFileSync("test/test.js", appenddata)
-                console.log("test folder created")
-                //make test folder etc
+                console.log("Test cases for " + apiName + " generated")
             }
         })
     }
