@@ -37,20 +37,28 @@ if (program.generate) {
         var controller = fs.readFileSync(__dirname + "/lib/Controller.js")
         fs.exists("controllers", function(isExist) {
             if (isExist) {
-                controller = _.replace(
-                    controller,
-                    new RegExp("NewController", "g"),
-                    apiName
-                )
-                controller = _.replace(
-                    controller,
-                    new RegExp("NewModel", "g"),
-                    apiName + "Model"
-                )
-                var write = fs.writeFileSync(
-                    "controllers/" + apiName + "Controller.js",
-                    controller
-                )
+                fs.exists("controllers/" + apiName + "Controller.js", function(
+                    isExist
+                ) {
+                    if (isExist) {
+                        "Controller for " + apiName + "already exist"
+                    } else {
+                        controller = _.replace(
+                            controller,
+                            new RegExp("NewController", "g"),
+                            apiName
+                        )
+                        controller = _.replace(
+                            controller,
+                            new RegExp("NewModel", "g"),
+                            apiName + "Model"
+                        )
+                        var write = fs.writeFileSync(
+                            "controllers/" + apiName + "Controller.js",
+                            controller
+                        )
+                    }
+                })
                 console.log("Controller " + apiName + " Generated")
             } else {
                 console.log("Controller Folder not found")
@@ -106,7 +114,7 @@ if (program.generate) {
                         // var fileName = apiName + "/" + apiName + "Api.js"
                         var write = fs.writeFileSync("test/" + fileName, api)
                         var appenddata =
-                            'require("./' +
+                            '\nrequire("./' +
                             apiName +
                             "/" +
                             apiName +
